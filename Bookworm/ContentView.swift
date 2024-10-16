@@ -10,7 +10,15 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
-    @Query var books: [Book]
+//    @Query var books: [Book]
+//    @Query(sort: \Book.title) var books: [Book]
+//    @Query(sort: \Book.rating, order: .reverse) var books: [Book]
+//    @Query(sort: [SortDescriptor(\Book.title)]) var books: [Book]
+//    @Query(sort: [SortDescriptor(\Book.title, order: .reverse)]) var books: [Book]
+    @Query(sort: [
+        SortDescriptor(\Book.title),
+        SortDescriptor(\Book.author)
+    ]) var books: [Book]
 
     @State private var showingAddScreen = false
     var body: some View {
