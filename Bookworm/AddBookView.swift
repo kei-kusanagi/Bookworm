@@ -19,8 +19,14 @@ struct AddBookView: View {
     
     let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
     
+    private var canSave: Bool {
+        !review.isEmpty && ( !title.isEmpty || !author.isEmpty || !review.isEmpty )
+    }
+
     
+
     var body: some View {
+        
         NavigationStack {
             Form {
                 Section {
@@ -39,13 +45,11 @@ struct AddBookView: View {
                         TextEditor(text: $review)
                         RatingView(rating: $rating)
                     }
-                
-
-                
-                  
                         Button("Save") {
                             saveBook()
                         }
+                        .disabled(!canSave)
+                
                         Spacer()
                         Button("Cancel") {
                             dismiss()
@@ -54,21 +58,20 @@ struct AddBookView: View {
                 
             }
             .navigationTitle("Add Book")
-//            .toolbar {
-//                            ToolbarItem(placement: .cancellationAction) {
-//                                Button("Cancel") {
-//                                    dismiss()  // Solo cierra la vista sin guardar
-//                                }
-//                            }
-//                        }
         }
     }
     
     private func saveBook() {
 
-        let newBook = Book(title: title, author: author, genre: genre, review: review, rating: rating)
-        modelContext.insert(newBook)
-        dismiss()
+        let newBook = Book(
+                   title: title.isEmpty ? "Unknown Title" : title,
+                   author: author.isEmpty ? "Unknown Author" : author,
+                   genre: genre.isEmpty ? "Unknown Genre" : genre,
+                   review: review,
+                   rating: rating
+               )
+               modelContext.insert(newBook)
+               dismiss()
     }
 }
 
