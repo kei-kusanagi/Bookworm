@@ -28,6 +28,7 @@ struct ContentView: View {
                             VStack(alignment: .leading) {
                                 Text(book.title)
                                     .font(.headline)
+                                    .foregroundColor(color(for: book.rating))
                                 Text(book.author)
                                     .foregroundStyle(.secondary)
                             }
@@ -63,6 +64,17 @@ struct ContentView: View {
         for offset in offsets {
             let book = books[offset]
             modelContext.delete(book)
+        }
+    }
+    
+    private func color(for rating: Int) -> Color {
+        switch rating {
+        case 1: return .red
+        case 2: return .orange
+        case 3: return .yellow
+        case 4: return .cyan
+        case 5: return .mint
+        default: return .primary
         }
     }
 
