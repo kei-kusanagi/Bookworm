@@ -34,25 +34,41 @@ struct AddBookView: View {
                     }
                 }
 
-                Section("Write a review") {
-                    TextEditor(text: $review)
-
+                
                     Section("Write a review") {
                         TextEditor(text: $review)
                         RatingView(rating: $rating)
                     }
-                }
+                
 
-                Section {
-                    Button("Save") {
-                        let newBook = Book(title: title, author: author, genre: genre, review: review, rating: rating)
-                        modelContext.insert(newBook)
-                        dismiss()
-                    }
-                }
+                
+                  
+                        Button("Save") {
+                            saveBook()
+                        }
+                        Spacer()
+                        Button("Cancel") {
+                            dismiss()
+                        }
+                    
+                
             }
             .navigationTitle("Add Book")
+//            .toolbar {
+//                            ToolbarItem(placement: .cancellationAction) {
+//                                Button("Cancel") {
+//                                    dismiss()  // Solo cierra la vista sin guardar
+//                                }
+//                            }
+//                        }
         }
+    }
+    
+    private func saveBook() {
+
+        let newBook = Book(title: title, author: author, genre: genre, review: review, rating: rating)
+        modelContext.insert(newBook)
+        dismiss()
     }
 }
 
