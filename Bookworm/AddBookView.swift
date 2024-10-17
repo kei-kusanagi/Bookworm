@@ -68,7 +68,8 @@ struct AddBookView: View {
                    author: author.isEmpty ? "Unknown Author" : author,
                    genre: genre.isEmpty ? "Unknown Genre" : genre,
                    review: review,
-                   rating: rating
+                   rating: rating,
+                   date: .now
                )
                modelContext.insert(newBook)
                dismiss()

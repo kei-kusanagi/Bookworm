@@ -42,6 +42,9 @@ struct DetailView: View {
 
             RatingView(rating: .constant(book.rating))
                 .font(.largeTitle)
+            
+            
+            
         }
         .navigationTitle(book.title)
         .navigationBarTitleDisplayMode(.inline)
@@ -57,6 +60,15 @@ struct DetailView: View {
                 showingDeleteAlert = true
             }
         }
+        HStack {
+                    Spacer()
+            Text("Review submitted on: \(formattedDate(book.date))\n\(formattedTime(book.date))")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.trailing)
+                        .padding()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
 
 
     }
@@ -65,6 +77,19 @@ struct DetailView: View {
         modelContext.delete(book)
         dismiss()
     }
+    func formattedDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter.string(from: date)
+    }
+
+    func formattedTime(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
 
 }
 
@@ -72,7 +97,7 @@ struct DetailView: View {
     do {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Book.self, configurations: config)
-        let example = Book(title: "Test Book", author: "Test Author", genre: "Fantasy", review: "This was a great book; I really enjoyed it.", rating: 4)
+        let example = Book(title: "Test Book", author: "Test Author", genre: "Fantasy", review: "This was a great book; I really enjoyed it.", rating: 4, date: .now)
 
         return DetailView(book: example)
             .modelContainer(container)
